@@ -1,0 +1,210 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {   
+    return MaterialApp(   
+        
+      home: new Scaffold(   
+         backgroundColor: Colors.cyan,
+           
+        body: Center(   
+          child: Column(
+            children: [
+              Container(
+                height: 150.0,
+                width: 300.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/top.png'),
+                    fit: BoxFit.fill,
+                  ),
+              
+                ),
+              ),
+              Container(
+                height: 50.0,
+                width: 300.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/welcome.png'),
+                    fit: BoxFit.fill,
+                  ),
+                
+                ),
+              ),
+              Container(
+               height: 50.0,
+                width: 300.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/center.png'),
+                    fit: BoxFit.fill,
+                  ),
+                
+                ),
+              ),
+              Container(
+               height: 50.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/learn.png'),
+                    fit: BoxFit.fill,
+                  ),
+                
+                ),
+              ),
+              IconButton(
+                  icon: Image.asset('assets/images/button.jpg'),
+                  iconSize: 100,
+                  onPressed: () {
+            _navigateToNextScreen(context);
+          },
+              ),
+              IconButton(
+                  icon: Image.asset('assets/images/exit.png'),
+                  iconSize: 100,
+                  onPressed: () {},
+              ),
+            ]
+          )
+        ),   
+      ),   
+    );   
+  }   
+  }
+
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewScreen()));
+  }
+
+
+class NewScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+    
+    body: new Card(
+    child: new Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new Container(
+          padding: new EdgeInsets.only(top: 16.0),
+          child: new Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+                new Text(
+                'SCIENCE is FUN',
+                style: new TextStyle(
+                fontSize: 35.0,
+                fontFamily: 'Roboto',
+                color: new Color(0xFF26C6DA)
+                ),
+              )
+            ],
+          ),
+        ),
+        new Text('click to learn'),
+        new Text('categories',
+        style: new TextStyle(
+        fontSize: 35.0,
+        fontFamily: 'Roboto',
+        color: new Color(0xFF26C6DA))
+            ),
+
+            ///Start Design//
+            Container(
+               height: 80.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/human_body.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+                 Container(
+               height: 80.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/food.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+                 Container(
+               height: 80.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/animals.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+                   Container(
+               height: 80.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/plants.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+                new Container(
+          padding: new EdgeInsets.only(top: 16.0),
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Align(
+              alignment: Alignment.bottomCenter,
+              child: Image.asset(
+                "assets/images/planets.png",
+                height: 80.0,
+              ),
+             ),
+             mainAxisAlignment: MainAxisAlignment.start,
+              Align(
+              alignment: Alignment(0.7, -0.5),
+              child: Image.asset(
+                "assets/images/games.png",
+                height: 80.0,
+                ),
+                )
+              ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
