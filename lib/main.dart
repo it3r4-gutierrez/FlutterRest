@@ -1,6 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'AdminPage.dart';
 
 void main() => runApp(MyApp());
+
+
+String username='';
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,6 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: HomeScreen(),
+      routes: <String,WidgetBuilder>{
+        '/AdminPage': (BuildContext context)=> new AdminPage(username: username,),
+        '/MyHomePage': (BuildContext context)=> new MyHomePage(),
+      },
     );
   }
 }
@@ -95,7 +108,7 @@ class HomeScreen extends StatelessWidget {
   
 
   void _navigateToNextScreen(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DialogExample()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
   }
 
   
@@ -201,58 +214,85 @@ class HumanBody extends StatelessWidget {
 }
 }
 
-class DialogExample extends StatefulWidget {
-
+class MyHomePage extends StatefulWidget {
   @override
-  _DialogExampleState createState() => new _DialogExampleState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _DialogExampleState extends State<DialogExample> {
-  String _text = "initial";
-  TextEditingController _c;
-  @override
-  initState(){
-    _c = new TextEditingController();
-    super.initState();
+class _MyHomePageState extends State<MyHomePage> {
+
+TextEditingController user=new TextEditingController();
+TextEditingController pass=new TextEditingController();
+
+String msg='';
+
+Future<List> _login() async {
+  final response = await http.post("http://192.168.1.11/register/login.php", body: {
+    "username": user.text,
+    "password": pass.text,
+    
+  });
+
+  var datauser = json.decode(response.body);
+
+  if(datauser.length==0){
+    setState(() {
+          msg="Login Fail";
+        });
+  }else{
+    if(datauser[0]['level']=='admin'){
+       Navigator.pushReplacementNamed(context, '/AdminPage');
+    }else if(datauser[0]['level']=='member'){
+      Navigator.pushReplacementNamed(context, '/MemberPage');
+    }
+
+    setState(() {
+          username= datauser[0]['username'];
+        });
+  
   }
+
+  return datauser;
+}
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(_text),
-            new RaisedButton(onPressed: () {
-              showDialog(child: new Dialog(
-                child: new Column(
-                  children: <Widget>[
-                    new TextField(
-                        decoration: new InputDecoration(hintText: "Update Info"),
-                        controller: _c,
-
-                    ),
-                    new FlatButton(
-                      child: new Text("Save"),
-                      onPressed: (){
-                        setState((){
-                        this._text = _c.text;
-                      });
-                      Navigator.pop(context);
-                      },
-                    )
-                  ],
+    return Scaffold(
+      appBar: AppBar(title: Text("Login"),),
+      body: Container(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text("Username",style: TextStyle(fontSize: 18.0),),
+              TextField(   
+                controller: user,                
+                decoration: InputDecoration(
+                  hintText: 'Username'
+                ),           
                 ),
+              Text("Password",style: TextStyle(fontSize: 18.0),),
+              TextField(  
+                controller: pass,  
+                obscureText: true,                
+                 decoration: InputDecoration(
+                  hintText: 'Password'
+                ),                
+                ),
+              
+              RaisedButton(
+                child: Text("Login"),
+                onPressed: (){
+                  _login();
+                },
+              ),
 
-              ), context: context);
-            },child: new Text("Enter your name"),)
-          ],
-        )
+              Text(msg,style: TextStyle(fontSize: 20.0,color: Colors.red),)
+             
+
+            ],
+          ),
+        ),
       ),
     );
-  }
 }
-
-
-
- 
+}
